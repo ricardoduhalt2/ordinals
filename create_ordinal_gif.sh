@@ -311,7 +311,7 @@ if [ "${CONVERSION_TYPE}" = "gif" ] || [ "$SERVER_CALL" = true ]; then
   fi
 
   # Calculate height for 9:16 aspect ratio
-  HEIGHT=$((WIDTH * 16 / 9))\n
+  HEIGHT=$((WIDTH * 16 / 9))
   # Temporary GIF name in CWD
   TEMP_GIF_CWD="temp_${OUTPUT_GIF_BASENAME}.gif"
 

@@ -65,17 +65,18 @@ app.post('/upload', upload.single('videoFile'), (req, res) => {
     // Based on the original filename to keep it recognizable
     const originalNameBase = path.basename(req.file.originalname, path.extname(req.file.originalname)).replace(/\s+/g, '_');
     const uniqueTimestamp = Date.now();
-    const outputGifBasename = `${originalNameBase}-${uniqueTimestamp}-ordinal`;
-    const outputWebpBasename = `${originalNameBase}-${uniqueTimestamp}-ordinal`; // Can be same or different
+    const outputGifBasename = `${originalNameBase}-${uniqueTimestamp}-ordinal-gif`; // Made distinct for clarity
+    const outputWebpBasename = `${originalNameBase}-${uniqueTimestamp}-ordinal-webp`; // Made distinct for clarity
 
     // Path to the conversion script (it's one directory up from webapp/)
     const scriptPath = path.join(__dirname, '..', 'create_ordinal_gif.sh');
 
-    // Arguments for create_ordinal_gif.sh: <input_mp4_file> [output_gif_name] [output_webp_name]
+    // Arguments for create_ordinal_gif.sh server call mode: 
+    // <input_mp4_file> <output_gif_basename> <output_webp_basename>
     const args = [
-        '-i', inputFileRelativePath,
-        '-o', `${outputGifBasename}.gif`,
-        '-t', 'gif'
+        inputFileRelativePath,
+        outputGifBasename,
+        outputWebpBasename
     ];
 
     // Options for execFile:
@@ -111,14 +112,82 @@ app.post('/upload', upload.single('videoFile'), (req, res) => {
 
         // Construct URL for the client to access/download the converted GIF file
         const gifUrl = `/ordinal/${outputGifBasename}.gif`;
-
-        res.json({
+        const responseJson = {
             message: 'Conversion successful!',
             gifUrl: gifUrl,
+            script_stdout: stdout
+        };
+
+        // Check if WEBP (video) was created and add its URL
+        const webpFilePath = path.join(convertedFilesPath, `${outputWebpBasename}.webp`);
+        if (fs.existsSync(webpFilePath)) {
+            const webpUrl = `/ordinal/${outputWebpBasename}.webp`;
+            responseJson.webpUrl = webpUrl;
+            console.log(`WEBP (video) file created: ${webpFilePath}`);
+        } else {
+            console.log(`WEBP (video) file NOT found: ${webpFilePath}`);
+            // Optionally, you could add a note to the message if WEBP failed but GIF succeeded
+            // responseJson.message = 'GIF Conversion successful! WEBP video conversion failed or was not attempted.';
+        }
+
+        res.json(responseJson);
+    });
+});
+
+// Handle image upload and conversion to WEBP
+app.post('/upload-image', upload.single('imageFile'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: 'No image file uploaded.' });
+    }
+
+    const inputFileRelativePath = path.relative(__dirname, req.file.path);
+    const originalNameBase = path.basename(req.file.originalname, path.extname(req.file.originalname)).replace(/\s+/g, '_');
+    const uniqueTimestamp = Date.now();
+    const outputWebpBasename = `${originalNameBase}-${uniqueTimestamp}-ordinal`;
+
+    const scriptPath = path.join(__dirname, '..', 'create_ordinal_gif.sh');
+    const args = [
+        '-p', inputFileRelativePath,
+        '-o', outputWebpBasename, // Output basename, .webp will be added by script
+        '-t', 'webp'
+    ];
+
+    const options = {
+        cwd: __dirname
+    };
+
+    console.log(`Executing for image: ${scriptPath} ${args.join(' ')} (CWD: ${options.cwd})`);
+
+    execFile(scriptPath, args, options, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`execFile error (image conversion): ${error.message}`);
+            console.error(`Script stderr (image conversion): ${stderr}`);
+            // Optionally, delete the uploaded file on error
+            // fs.unlink(req.file.path, (unlinkErr) => {
+            //    if (unlinkErr) console.error('Error deleting uploaded image after failed conversion:', unlinkErr);
+            // });
+            return res.status(500).json({
+                message: 'Error during image conversion process.',
+                error: stderr || error.message,
+                stdout: stdout
+            });
+        }
+
+        console.log(`Script stdout (image conversion): ${stdout}`);
+        if (stderr) {
+            console.warn(`Script stderr (image conversion - possibly warnings): ${stderr}`);
+        }
+
+        const webpUrl = `/ordinal/${outputWebpBasename}.webp`;
+
+        res.json({
+            message: 'Image converted to WEBP successfully!',
+            webpUrl: webpUrl,
             script_stdout: stdout
         });
     });
 });
+
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
