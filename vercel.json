@@ -1,15 +1,10 @@
 {
-  "builds": [
-    {
-      "src": "webapp/server.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/webapp/server.js"
-    }
+  "rewrites": [
+    { "source": "/style.css", "destination": "/webapp/style.css" },
+    { "source": "/script.js", "destination": "/webapp/script.js" },
+    { "source": "/upload", "destination": "/webapp/server.js" },
+    { "source": "/upload-image", "destination": "/webapp/server.js" },
+    { "source": "/(.*)", "destination": "/webapp/index.html" }
   ],
   "headers": [
     {
