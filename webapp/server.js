@@ -73,9 +73,9 @@ app.post('/upload', upload.single('videoFile'), (req, res) => {
 
     // Arguments for create_ordinal_gif.sh: <input_mp4_file> [output_gif_name] [output_webp_name]
     const args = [
-        inputFileRelativePath,
-        outputGifBasename,
-        outputWebpBasename
+        '-i', inputFileRelativePath,
+        '-o', `${outputGifBasename}.gif`,
+        '-t', 'gif'
     ];
 
     // Options for execFile:
@@ -109,15 +109,12 @@ app.post('/upload', upload.single('videoFile'), (req, res) => {
             console.warn(`Script stderr (possibly warnings): ${stderr}`);
         }
 
-        // Construct URLs for the client to access/download the converted files
-        // These paths are relative to the '/ordinal' static route configured earlier
+        // Construct URL for the client to access/download the converted GIF file
         const gifUrl = `/ordinal/${outputGifBasename}.gif`;
-        const webpUrl = `/ordinal/${outputWebpBasename}.webp`;
 
         res.json({
             message: 'Conversion successful!',
             gifUrl: gifUrl,
-            webpUrl: webpUrl,
             script_stdout: stdout
         });
     });

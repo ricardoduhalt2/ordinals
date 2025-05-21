@@ -1,4 +1,23 @@
-# MP4 to Animated GIF Converter for Bitcoin Ordinals
+# MP4 to Ordinal GIF/WEBP Converter
+
+## Web Application
+
+This project includes a web application that provides a user-friendly interface for converting MP4 videos to optimized GIFs.
+
+### Features:
+*   **MP4 to GIF Conversion:** Upload an MP4 video, and the application will convert it into an optimized GIF suitable for Bitcoin Ordinals.
+*   **Client-side Feedback:** Provides messages during the upload and conversion process.
+*   **Download Links:** Offers direct download links for the generated GIF.
+
+### Usage:
+1.  Ensure the server is running (see "Running the Web App" below).
+2.  Open `http://localhost:3000` in your web browser.
+3.  Choose an MP4 video file using the "Choose File" button.
+4.  Click "Convert Video" to start the conversion.
+5.  Once complete, download links for the generated GIF will appear.
+
+**Note:** While the underlying `create_ordinal_gif.sh` script supports WEBP conversion from images, the current web application interface is primarily designed for MP4 to GIF conversion. WEBP conversion from video frames is not yet integrated into the web app's direct conversion flow.
+
 
 ## Description
 This project provides a script to convert MP4 videos into animated GIFs optimized for inscription as Bitcoin Ordinals. The script focuses on minimizing file size while maintaining acceptable visual quality.
@@ -70,23 +89,19 @@ To revert to the current state (without the web app), simply delete the `webapp`
 rm -rf webapp
 ```
 
-## Running the Web App
+### Running the Web App
 
-1.  Install Node.js and npm (if you don't have them already).
-2.  Navigate to the project directory:
-    ```bash
-    cd /home/rich/ordinals
-    ```
-3.  Navigate to the `webapp` directory:
+1.  Ensure Node.js and npm are installed.
+2.  Navigate to the `webapp` directory:
     ```bash
     cd webapp
     ```
-4.  Install the dependencies:
+3.  Install Node.js dependencies:
     ```bash
-    npm install express multer
+    npm install
     ```
-5.  Run the server:
+4.  Run the server:
     ```bash
     node server.js
     ```
-6.  Open your web browser and navigate to `http://localhost:3000`.
+5.  Open your web browser and navigate to `http://localhost:3000`.
