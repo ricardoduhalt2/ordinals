@@ -1,0 +1,13 @@
+# Generated files and directories
+ordinal/
+webapp/uploads/
+temp_*.gif
+frame_*.png
+webp_frames_tmp/
+
+# Node.js dependencies
+node_modules/
+webapp/node_modules/
+
+# Environment variables
+.env
