@@ -5,18 +5,22 @@
 This project includes a web application that provides a user-friendly interface for converting MP4 videos to optimized GIFs.
 
 ### Features:
-*   **MP4 to GIF Conversion:** Upload an MP4 video, and the application will convert it into an optimized GIF suitable for Bitcoin Ordinals.
+*   **MP4 to Ordinal GIF/WEBP Conversion:** Upload an MP4 video, and the application will convert it into an optimized GIF and/or WEBP suitable for Bitcoin Ordinals.
+*   **Image to WEBP Conversion:** Upload an image (JPEG, PNG, GIF), and the application will convert it into an optimized WEBP image.
 *   **Client-side Feedback:** Provides messages during the upload and conversion process.
-*   **Download Links:** Offers direct download links for the generated GIF.
+*   **Download Links:** Offers direct download links for the generated files.
 
 ### Usage:
 1.  Ensure the server is running (see "Running the Web App" below).
 2.  Open `http://localhost:3000` in your web browser.
-3.  Choose an MP4 video file using the "Choose File" button.
-4.  Click "Convert Video" to start the conversion.
-5.  Once complete, download links for the generated GIF will appear.
-
-**Note:** While the underlying `create_ordinal_gif.sh` script supports WEBP conversion from images, the current web application interface is primarily designed for MP4 to GIF conversion. WEBP conversion from video frames is not yet integrated into the web app's direct conversion flow.
+3.  **For MP4 to Ordinal GIF/WEBP Conversion:**
+    *   Choose an MP4 video file using the "Choose MP4 video" button.
+    *   Click "Convert Video" to start the conversion.
+    *   Once complete, download links for the generated GIF and/or WEBP will appear.
+4.  **For Image to WEBP Conversion:**
+    *   Choose an image file (JPEG, PNG, GIF) using the "Choose image" button.
+    *   Click "Convert Image to WEBP" to start the conversion.
+    *   Once complete, a download link for the generated WEBP image will appear.
 
 
 ## Description
@@ -65,11 +69,11 @@ To convert `upload/img/Kimono.png` to a WEBP image, use the following command:
 ```
 This will create an optimized WEBP image named `Kimono.webp` in the `/home/rich/ordinals/` directory. The script will attempt to reduce the file size to below 60KB by adjusting the image quality. Note that it might not always be possible to achieve this size depending on the input image.
 
-To convert `Kimono-Preview.mp4` to a GIF with a width of 300 pixels, a frame interval of 10, and 32 colors, use the following command:
+To convert `Kimono-Preview.mp4` to a WEBP video with a width of 300 pixels, a frame interval of 10, and a quality of 70, use the following command:
 ```bash
-./create_ordinal_gif.sh -i upload/Kimono-Preview.mp4 -o kimono.gif -w 300 -f 10 -c 32 -t gif
+./create_ordinal_gif.sh -i upload/Kimono-Preview.mp4 -o kimono_video -w 300 -f 10 -Q 70 -t webp
 ```
-This will create an optimized GIF named `kimono.gif` in the `ordinal/` directory.
+This will create an optimized WEBP video named `kimono_video.webp` in the `ordinal/` directory.
 
 ## Executing the Script
 
