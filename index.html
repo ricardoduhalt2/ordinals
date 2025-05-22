@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MP4 to Ordinal GIF/WEBP Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <img src="https://petgas.com.do/wp-content/uploads/2025/03/image-removebg-preview.png" alt="Logo" class="logo">
+        <h1>MP4 to Ordinal GIF/WEBP Converter</h1>
+
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="input-group">
+                <label for="videoFile">Choose MP4 video:</label>
+                <input type="file" id="videoFile" name="videoFile" accept="video/mp4" required>
+            </div>
+            <button type="submit" class="btn">Convert Video</button>
+        </form>
+
+        <div id="message" class="message"></div>
+        <div id="downloadLinks" class="download-links"></div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="container">
+        <h2>Image to WEBP Converter</h2>
+        <form id="imageUploadForm" enctype="multipart/form-data">
+            <div class="input-group">
+                <label for="imageFile">Choose image (JPEG, PNG, GIF):</label>
+                <input type="file" id="imageFile" name="imageFile" accept="image/jpeg,image/png,image/gif" required>
+            </div>
+            <button type="submit" class="btn">Convert Image to WEBP</button>
+        </form>
+
+    <div id="imageMessage" style="margin-top: 20px;"></div>
+    <div id="imageDownloadLinks" style="margin-top: 10px;"></div>
+
+    <script src="/script.js"></script>
+</body>
+</html>
